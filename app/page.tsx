@@ -1,47 +1,195 @@
+'use client'
+
+import { useMemo, useState } from 'react'
+import type {
+  Fuel,
+  LogEntry,
+  Station,
+  Unit,
+  VehicleId,
+} from '@/lib/ngebensin'
+import { greeting as getGreeting, SEED_HISTORY } from '@/lib/ngebensin'
+import { PhoneFrame } from '@/components/ngebensin/phone-frame'
+import { Sidebar } from '@/components/ngebensin/sidebar'
+import { SplashScreen } from '@/components/ngebensin/screens/splash'
+import { UsernameScreen } from '@/components/ngebensin/screens/username'
+import { VehicleScreen } from '@/components/ngebensin/screens/vehicle'
+import { HomeScreen } from '@/components/ngebensin/screens/home'
+import { StationScreen } from '@/components/ngebensin/screens/station'
+import { FuelScreen } from '@/components/ngebensin/screens/fuel'
+import { UnitScreen } from '@/components/ngebensin/screens/unit'
+import { AmountScreen } from '@/components/ngebensin/screens/amount'
+import { SuccessScreen } from '@/components/ngebensin/screens/success'
+import { HistoryScreen } from '@/components/ngebensin/screens/history'
+
+type Step =
+  | 'splash'
+  | 'username'
+  | 'vehicle'
+  | 'home'
+  | 'station'
+  | 'fuel'
+  | 'unit'
+  | 'amount'
+  | 'success'
+  | 'history'
+
 export default function Page() {
+  const [step, setStep] = useState<Step>('splash')
+  const [username, setUsername] = useState('')
+  const [, setVehicle] = useState<VehicleId | null>(null)
+  const [station, setStation] = useState<Station | null>(null)
+  const [fuel, setFuel] = useState<Fuel | null>(null)
+  const [unit, setUnit] = useState<Unit>('rupiah')
+  const [lastEntry, setLastEntry] = useState<LogEntry | null>(null)
+  const [history, setHistory] = useState<LogEntry[]>(SEED_HISTORY)
+  const [menuOpen, setMenuOpen] = useState(false)
+
+  const greeting = useMemo(() => getGreeting(), [])
+  const displayName = username || 'Kawan'
+
+  function navigate(key: string) {
+    setMenuOpen(false)
+    if (key === 'history') setStep('history')
+    else setStep('home')
+  }
+
+  function logout() {
+    setMenuOpen(false)
+    setUsername('')
+    setVehicle(null)
+    setStep('splash')
+  }
+
+  function confirmEntry({ liters, total }: { liters: number; total: number }) {
+    if (!station || !fuel) return
+    const entry: LogEntry = {
+      id: `log-${Date.now()}`,
+      fuel: fuel.name,
+      station: station.name,
+      liters,
+      total,
+      date: new Date().toISOString(),
+    }
+    setHistory((prev) => [entry, ...prev])
+    setLastEntry(entry)
+    setStep('success')
+  }
+
   return (
-    <main
-      style={{
-        colorScheme: 'light dark',
-        position: 'relative',
-        display: 'flex',
-        minHeight: '100vh',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'light-dark(#fff, #000)',
-        color: 'light-dark(#000, #fff)',
-      }}
-    >
-      <svg
-        aria-hidden="true"
-        style={{ width: 80, height: 80 }}
-        width={80}
-        height={80}
-        fill="none"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-        stroke="currentColor"
-        strokeWidth="0.5"
-      >
-        <path
-          d="M14.2 14.2H17V6.9375C17 4.76288 15.2371 3 13.0625 3H5.8V5.8M14.2 14.2V7.79063L7.79062 14.2H14.2ZM14.2 14.2V17H6.9375C4.76288 17 3 15.2371 3 13.0625V5.8H5.8M5.8 5.8V12.2313L12.2313 5.8H5.8Z"
-          strokeLinejoin="round"
+    <PhoneFrame>
+      {step === 'splash' && (
+        <SplashScreen onStart={() => setStep('username')} />
+      )}
+
+      {step === 'username' && (
+        <UsernameScreen
+          onSubmit={(name) => {
+            setUsername(name)
+            setStep('vehicle')
+          }}
         />
-      </svg>
-      <p
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: 'calc(50% + 56px)',
-          transform: 'translateX(-50%)',
-          whiteSpace: 'nowrap',
-          fontSize: '14px',
-          fontWeight: 500,
-          color: 'light-dark(#71717a, #a1a1aa)',
-        }}
-      >
-        Your v0 generation will show here.
-      </p>
-    </main>
+      )}
+
+      {step === 'vehicle' && (
+        <VehicleScreen
+          greeting={greeting}
+          username={displayName}
+          onMenu={() => setMenuOpen(true)}
+          onSelect={(v) => {
+            setVehicle(v)
+            setStep('home')
+          }}
+        />
+      )}
+
+      {step === 'home' && (
+        <HomeScreen
+          greeting={greeting}
+          username={displayName}
+          history={history}
+          onMenu={() => setMenuOpen(true)}
+          onAdd={() => setStep('station')}
+          onViewHistory={() => setStep('history')}
+        />
+      )}
+
+      {step === 'station' && (
+        <StationScreen
+          greeting={greeting}
+          username={displayName}
+          onBack={() => setStep('home')}
+          onSelect={(s) => {
+            setStation(s)
+            setStep('fuel')
+          }}
+        />
+      )}
+
+      {step === 'fuel' && station && (
+        <FuelScreen
+          greeting={greeting}
+          username={displayName}
+          station={station}
+          onBack={() => setStep('station')}
+          onSelect={(f) => {
+            setFuel(f)
+            setStep('unit')
+          }}
+        />
+      )}
+
+      {step === 'unit' && station && fuel && (
+        <UnitScreen
+          greeting={greeting}
+          username={displayName}
+          station={station}
+          fuel={fuel}
+          onBack={() => setStep('fuel')}
+          onSelect={(u) => {
+            setUnit(u)
+            setStep('amount')
+          }}
+        />
+      )}
+
+      {step === 'amount' && station && fuel && (
+        <AmountScreen
+          greeting={greeting}
+          username={displayName}
+          station={station}
+          fuel={fuel}
+          unit={unit}
+          onBack={() => setStep('unit')}
+          onConfirm={confirmEntry}
+        />
+      )}
+
+      {step === 'success' && lastEntry && (
+        <SuccessScreen
+          entry={lastEntry}
+          onViewHistory={() => setStep('history')}
+          onDone={() => setStep('home')}
+        />
+      )}
+
+      {step === 'history' && (
+        <HistoryScreen
+          greeting={greeting}
+          username={displayName}
+          history={history}
+          onBack={() => setStep('home')}
+        />
+      )}
+
+      <Sidebar
+        open={menuOpen}
+        active={step === 'history' ? 'history' : 'home'}
+        username={displayName}
+        onClose={() => setMenuOpen(false)}
+        onNavigate={navigate}
+        onLogout={logout}
+      />
+    </PhoneFrame>
   )
 }
