@@ -27,14 +27,16 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Install Dependencies
+      - name: Install Flutter Dependencies
         run: flutter pub get
 
-      # Langkah 1: Jalankan flutter build ios config-only agar struktur xcode project terbentuk
-      - name: Prepare iOS Build Target
-        run: flutter build ios --release --config-only
+      # Step 1: Install CocoaPods dependencies secara manual
+      - name: Install CocoaPods
+        run: |
+          cd ios
+          pod install
 
-      # Langkah 2: Kompilasi langsung lewat xcodebuild tanpa memeriksa signing/development team
+      # Step 2: Build langsung lewat xcodebuild (Bypass pengecekan sertifikat Flutter CLI)
       - name: Build iOS Unsigned via Xcodebuild
         run: |
           xcodebuild -workspace ios/Runner.xcworkspace \
@@ -46,13 +48,13 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY=""
 
-      # Langkah 3: Kompres folder output menjadi file ngebensin-ios.zip
+      # Step 3: Kompres folder hasil kompilasi Runner.app
       - name: Compress Build Output
         run: |
           cd build/ios/Build/Products/Release-iphoneos
           zip -r ngebensin-ios.zip Runner.app
 
-      # Langkah 4: Unggah file ngebensin-ios.zip ke Artifacts
+      # Step 4: Unggah Artifact ke GitHub
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@v4
         with:
