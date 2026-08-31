@@ -30,19 +30,32 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      # Paksa Xcode mengabaikan penandatanganan kode (signing)
-      - name: Build iOS Unsigned (Release)
-        run: |
-          flutter build ios --release --no-codesign CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" CODE_SIGN_ENTITLEMENTS=""
+      # Langkah 1: Jalankan flutter build ios config-only agar struktur xcode project terbentuk
+      - name: Prepare iOS Build Target
+        run: flutter build ios --release --config-only
 
+      # Langkah 2: Kompilasi langsung lewat xcodebuild tanpa memeriksa signing/development team
+      - name: Build iOS Unsigned via Xcodebuild
+        run: |
+          xcodebuild -workspace ios/Runner.xcworkspace \
+            -scheme Runner \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build/ios \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+      # Langkah 3: Kompres folder output menjadi file ngebensin-ios.zip
       - name: Compress Build Output
         run: |
-          cd build/ios/iphoneos
+          cd build/ios/Build/Products/Release-iphoneos
           zip -r ngebensin-ios.zip Runner.app
 
+      # Langkah 4: Unggah file ngebensin-ios.zip ke Artifacts
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ngebensin-ios-runner
-          path: build/ios/iphoneos/ngebensin-ios.zip
+          path: build/ios/Build/Products/Release-iphoneos/ngebensin-ios.zip
           retention-days: 7
