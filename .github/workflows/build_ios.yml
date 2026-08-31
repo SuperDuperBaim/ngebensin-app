@@ -27,16 +27,26 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Install Flutter Dependencies
-        run: flutter pub get
+      # Step 1: Download artefak iOS Flutter & ambil dependensi pub
+      - name: Precache iOS & Fetch Dependencies
+        run: |
+          flutter precache --ios
+          flutter pub get
 
-      # Step 1: Install CocoaPods dependencies secara manual
+      # Step 2: Naikkan versi minimum iOS di Podfile ke 15.0 secara otomatis
+      - name: Update iOS Deployment Target in Podfile
+        run: |
+          cd ios
+          sed -i '' "s/# platform :ios, '.*'/platform :ios, '15.0'/" Podfile || true
+          sed -i '' "s/platform :ios, '.*'/platform :ios, '15.0'/" Podfile || true
+
+      # Step 3: Install CocoaPods
       - name: Install CocoaPods
         run: |
           cd ios
           pod install
 
-      # Step 2: Build langsung lewat xcodebuild (Bypass pengecekan sertifikat Flutter CLI)
+      # Step 4: Build aplikasi via Xcodebuild (Bypass Code Signing)
       - name: Build iOS Unsigned via Xcodebuild
         run: |
           xcodebuild -workspace ios/Runner.xcworkspace \
@@ -48,13 +58,13 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY=""
 
-      # Step 3: Kompres folder hasil kompilasi Runner.app
+      # Step 5: Kompres folder hasil kompilasi
       - name: Compress Build Output
         run: |
           cd build/ios/Build/Products/Release-iphoneos
           zip -r ngebensin-ios.zip Runner.app
 
-      # Step 4: Unggah Artifact ke GitHub
+      # Step 6: Unggah Artifact ke GitHub
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@v4
         with:
