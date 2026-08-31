@@ -51,14 +51,15 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY=""
 
-      - name: Compress Build Output
+      - name: Package as IPA
         run: |
-          cd build/ios/Build/Products/Release-iphoneos
-          zip -r ngebensin-ios.zip Runner.app
+          mkdir -p Payload
+          cp -r build/ios/Build/Products/Release-iphoneos/Runner.app Payload/
+          zip -r ngebensin.ipa Payload
 
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ngebensin-ios-runner
-          path: build/ios/Build/Products/Release-iphoneos/ngebensin-ios.zip
+          path: ngebensin.ipa
           retention-days: 7
