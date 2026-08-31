@@ -30,19 +30,19 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      # Tambahkan flag --simulator agar tidak meminta Development Team
-      - name: Build iOS Simulator (Unsigned)
-        run: flutter build ios --simulator --release
+      # Paksa Xcode mengabaikan penandatanganan kode (signing)
+      - name: Build iOS Unsigned (Release)
+        run: |
+          flutter build ios --release --no-codesign CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" CODE_SIGN_ENTITLEMENTS=""
 
-      # Mengompresi file Runner.app dari folder iphonesimulator
       - name: Compress Build Output
         run: |
-          cd build/ios/iphonesimulator
+          cd build/ios/iphoneos
           zip -r ngebensin-ios.zip Runner.app
 
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ngebensin-ios-runner
-          path: build/ios/iphonesimulator/ngebensin-ios.zip
+          path: build/ios/iphoneos/ngebensin-ios.zip
           retention-days: 7
