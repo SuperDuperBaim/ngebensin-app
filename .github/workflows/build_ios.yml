@@ -30,17 +30,19 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Build iOS (Unsigned)
-        run: flutter build ios --release --no-codesign
+      # Tambahkan flag --simulator agar tidak meminta Development Team
+      - name: Build iOS Simulator (Unsigned)
+        run: flutter build ios --simulator --release
 
+      # Mengompresi file Runner.app dari folder iphonesimulator
       - name: Compress Build Output
         run: |
-          cd build/ios/iphoneos
+          cd build/ios/iphonesimulator
           zip -r ngebensin-ios.zip Runner.app
 
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ngebensin-ios-runner
-          path: build/ios/iphoneos/ngebensin-ios.zip
+          path: build/ios/iphonesimulator/ngebensin-ios.zip
           retention-days: 7
