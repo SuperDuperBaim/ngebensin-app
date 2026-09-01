@@ -26,45 +26,49 @@ class HistoryScreen extends StatelessWidget {
           children: [
             // Dark Header
             Padding(
-              padding: const EdgeInsets.fromLTRB(12, 12, 16, 16),
-              child: Row(
-                children: [
-                  const Text(
-                    'Riwayat',
-                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const Spacer(),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      if (logs.isEmpty) {
-                        showThemedPopup(
-                          context,
-                          message: 'Belum ada catatan riwayat nih!\nCatat dulu pengisian bensinmu baru bisa ekspor PDF 📄',
-                          icon: LucideIcons.fileX,
-                          buttonText: 'Oke, nanti deh!',
-                        );
-                        return;
-                      }
-                      PdfService.generateAndExportPdf(
-                        username: provider.displayName,
-                        vehicle: provider.selectedHistoryVehicleId == 'all'
-                            ? 'Semua Kendaraan'
-                            : provider.getVehicleName(provider.selectedHistoryVehicleId),
-                        logs: logs,
-                        vehicleMap: { for (var v in provider.vehicles) v.id: v.name },
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.surface,
-                      foregroundColor: AppColors.textDark,
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                      elevation: 0,
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+              child: SizedBox(
+                height: 44,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Riwayat',
+                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    icon: const Icon(LucideIcons.fileText, size: 16),
-                    label: const Text('Ekspor PDF', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                  ),
-                ],
+                    const Spacer(),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        if (logs.isEmpty) {
+                          showThemedPopup(
+                            context,
+                            message: 'Belum ada catatan riwayat nih!\nCatat dulu pengisian bensinmu baru bisa ekspor PDF 📄',
+                            icon: LucideIcons.fileX,
+                            buttonText: 'Oke, nanti deh!',
+                          );
+                          return;
+                        }
+                        PdfService.generateAndExportPdf(
+                          username: provider.displayName,
+                          vehicle: provider.selectedHistoryVehicleId == 'all'
+                              ? 'Semua Kendaraan'
+                              : provider.getVehicleName(provider.selectedHistoryVehicleId),
+                          logs: logs,
+                          vehicleMap: { for (var v in provider.vehicles) v.id: v.name },
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.surface,
+                        foregroundColor: AppColors.textDark,
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        elevation: 0,
+                      ),
+                      icon: const Icon(LucideIcons.fileText, size: 16),
+                      label: const Text('Ekspor PDF', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                    ),
+                  ],
+                ),
               ),
             ),
             // Cream Body Container

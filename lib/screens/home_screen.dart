@@ -98,67 +98,72 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             // Dark Header
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-              child: Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        provider.greeting,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        provider.displayName,
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.7),
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  // Vehicle Switcher Pill Button
-                  InkWell(
-                    onTap: () => _showVehicleSwitcherDialog(context),
-                    borderRadius: BorderRadius.circular(16),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            provider.selectedDashboardVehicleId == 'all'
-                                ? LucideIcons.layoutGrid
-                                : (provider.vehicle == 'mobil' ? LucideIcons.car : LucideIcons.bike),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+              child: SizedBox(
+                height: 44,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          provider.greeting,
+                          style: const TextStyle(
                             color: Colors.white,
-                            size: 16,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(width: 6),
-                          Text(
-                            provider.selectedDashboardVehicleId == 'all'
-                                ? 'Semua Kendaraan'
-                                : provider.vehicleName,
-                            style: const TextStyle(
+                        ),
+                        Text(
+                          provider.displayName,
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.7),
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    // Vehicle Switcher Pill Button
+                    InkWell(
+                      onTap: () => _showVehicleSwitcherDialog(context),
+                      borderRadius: BorderRadius.circular(16),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              provider.selectedDashboardVehicleId == 'all'
+                                  ? LucideIcons.layoutGrid
+                                  : (provider.vehicle == 'mobil' ? LucideIcons.car : LucideIcons.bike),
                               color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                              size: 16,
                             ),
-                          ),
-                          const SizedBox(width: 4),
-                          const Icon(LucideIcons.chevronDown, color: Colors.white, size: 14),
-                        ],
+                            const SizedBox(width: 6),
+                            Text(
+                              provider.selectedDashboardVehicleId == 'all'
+                                  ? 'Semua Kendaraan'
+                                  : provider.vehicleName,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            const Icon(LucideIcons.chevronDown, color: Colors.white, size: 14),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             // Cream Body Container
