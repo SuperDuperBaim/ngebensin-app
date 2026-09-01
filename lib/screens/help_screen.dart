@@ -3,6 +3,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../theme/colors.dart';
+import '../widgets/common_widgets.dart';
 
 class HelpScreen extends StatelessWidget {
   const HelpScreen({super.key});
@@ -55,84 +56,102 @@ class HelpScreen extends StatelessWidget {
                   padding: const EdgeInsets.all(24),
                   children: [
                     const SizedBox(height: 8),
-                    Center(
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: AppColors.olive.withValues(alpha: 0.12),
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          LucideIcons.helpCircle,
-                          size: 56,
-                          color: AppColors.primaryDark,
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 80),
+                      child: Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: AppColors.olive.withValues(alpha: 0.12),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            LucideIcons.helpCircle,
+                            size: 56,
+                            color: AppColors.primaryDark,
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Center(
-                      child: Text(
-                        'Pusat Bantuan',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textDark,
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 140),
+                      child: const Center(
+                        child: Text(
+                          'Pusat Bantuan',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textDark,
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Center(
-                      child: Text(
-                        'Ada pertanyaan, kritik, atau saran untuk Ngebensin?\nHubungi kami lewat tautan di bawah.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: AppColors.textDark.withValues(alpha: 0.7),
-                          height: 1.4,
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 200),
+                      child: Center(
+                        child: Text(
+                          'Ada pertanyaan, kritik, atau saran untuk Ngebensin?\nHubungi kami lewat tautan di bawah.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: AppColors.textDark.withValues(alpha: 0.7),
+                            height: 1.4,
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(height: 32),
-                    Text(
-                      'MEDIA SOSIAL & DEVELOPER',
-                      style: TextStyle(
-                        fontSize: 11,
-                        letterSpacing: 1.2,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.olive.withValues(alpha: 0.9),
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 260),
+                      child: Text(
+                        'MEDIA SOSIAL & DEVELOPER',
+                        style: TextStyle(
+                          fontSize: 11,
+                          letterSpacing: 1.2,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.olive.withValues(alpha: 0.9),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12),
                     // Instagram Card
-                    _SocialLinkCard(
-                      icon: LucideIcons.instagram,
-                      title: 'Instagram',
-                      subtitle: '@foolstuck_ · Hubungi pengembang & ikuti kabar terbaru',
-                      tag: '@foolstuck_',
-                      accentColor: const Color(0xFFE1306C),
-                      onTap: () => _openUrl('https://www.instagram.com/foolstuck_/'),
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 320),
+                      child: _SocialLinkCard(
+                        icon: LucideIcons.instagram,
+                        title: 'Instagram',
+                        subtitle: '@foolstuck_ · Hubungi pengembang & ikuti kabar terbaru',
+                        tag: '@foolstuck_',
+                        accentColor: const Color(0xFFE1306C),
+                        onTap: () => _openUrl('https://www.instagram.com/foolstuck_/'),
+                      ),
                     ),
                     const SizedBox(height: 36),
-                    Center(
-                      child: Column(
-                        children: [
-                          Text(
-                            'Ngebensin',
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.textDark.withValues(alpha: 0.5),
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 380),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Ngebensin',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textDark.withValues(alpha: 0.5),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Catat pengeluaran bensinmu dengan mudah.',
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: AppColors.textDark.withValues(alpha: 0.4),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Catat pengeluaran bensinmu dengan mudah.',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: AppColors.textDark.withValues(alpha: 0.4),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),

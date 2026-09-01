@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/models.dart';
 import '../providers/app_provider.dart';
 import '../theme/colors.dart';
+import '../widgets/common_widgets.dart';
 
 class ManageVehiclesScreen extends StatelessWidget {
   const ManageVehiclesScreen({super.key});
@@ -315,88 +316,94 @@ class ManageVehiclesScreen extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final v = list[index];
                           final isLast = provider.vehicles.length <= 1;
-                          return Container(
-                            margin: const EdgeInsets.only(bottom: 14),
-                            padding: const EdgeInsets.all(16),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: AppColors.olive.withValues(alpha: 0.15),
+                          return FadeSlideIn(
+                            delay: Duration(milliseconds: 80 + (index * 60).clamp(0, 500)),
+                            child: Container(
+                              margin: const EdgeInsets.only(bottom: 14),
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: AppColors.olive.withValues(alpha: 0.15),
+                                ),
                               ),
-                            ),
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primaryDark.withValues(alpha: 0.08),
-                                    shape: BoxShape.circle,
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(12),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primaryDark.withValues(alpha: 0.08),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Icon(
+                                      v.type == 'mobil' ? LucideIcons.car : LucideIcons.bike,
+                                      color: AppColors.primaryDark,
+                                      size: 24,
+                                    ),
                                   ),
-                                  child: Icon(
-                                    v.type == 'mobil' ? LucideIcons.car : LucideIcons.bike,
-                                    color: AppColors.primaryDark,
-                                    size: 24,
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        v.name,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColors.textDark,
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          v.name,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.textDark,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        v.type == 'mobil' ? 'Mobil' : 'Motor',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: AppColors.textDark.withValues(alpha: 0.6),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          v.type == 'mobil' ? 'Mobil' : 'Motor',
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: AppColors.textDark.withValues(alpha: 0.6),
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                IconButton(
-                                  icon: const Icon(LucideIcons.edit2, color: AppColors.primaryDark, size: 20),
-                                  onPressed: () => _showEditVehicleDialog(context, v),
-                                ),
-                                if (!isLast)
                                   IconButton(
-                                    icon: const Icon(LucideIcons.trash2, color: Color(0xFFD32F2F), size: 20),
-                                    onPressed: () => _showDeleteConfirmation(context, v),
+                                    icon: const Icon(LucideIcons.edit2, color: AppColors.primaryDark, size: 20),
+                                    onPressed: () => _showEditVehicleDialog(context, v),
                                   ),
-                              ],
+                                  if (!isLast)
+                                    IconButton(
+                                      icon: const Icon(LucideIcons.trash2, color: Color(0xFFD32F2F), size: 20),
+                                      onPressed: () => _showDeleteConfirmation(context, v),
+                                    ),
+                                ],
+                              ),
                             ),
                           );
                         },
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 110),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 54,
-                        child: ElevatedButton.icon(
-                          onPressed: () => _showAddVehicleDialog(context),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.primaryDark,
-                            foregroundColor: Colors.white,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(27),
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 300),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 110),
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: 54,
+                          child: ElevatedButton.icon(
+                            onPressed: () => _showAddVehicleDialog(context),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryDark,
+                              foregroundColor: Colors.white,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(27),
+                              ),
                             ),
-                          ),
-                          icon: const Icon(LucideIcons.plus, size: 20),
-                          label: const Text(
-                            'Tambah Kendaraan Baru',
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                            icon: const Icon(LucideIcons.plus, size: 20),
+                            label: const Text(
+                              'Tambah Kendaraan Baru',
+                              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
                       ),

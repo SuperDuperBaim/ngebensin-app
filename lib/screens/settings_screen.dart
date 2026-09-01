@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/app_provider.dart';
 import '../theme/colors.dart';
+import '../widgets/common_widgets.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -159,8 +160,10 @@ class SettingsScreen extends StatelessWidget {
                   children: [
                     const SizedBox(height: 8),
                     // Profile Overview Card
-                    Container(
-                      padding: const EdgeInsets.all(20),
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 80),
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
@@ -209,27 +212,33 @@ class SettingsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
+                    ),
                     const SizedBox(height: 28),
 
                     // Section Title: Zona Data & Akun
-                    Text(
-                      'ZONA DATA & AKUN',
-                      style: TextStyle(
-                        fontSize: 11,
-                        letterSpacing: 1.2,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.olive.withValues(alpha: 0.9),
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 140),
+                      child: Text(
+                        'ZONA DATA & AKUN',
+                        style: TextStyle(
+                          fontSize: 11,
+                          letterSpacing: 1.2,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.olive.withValues(alpha: 0.9),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12),
 
                     // Kelola Kendaraan Card
-                    Material(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      child: InkWell(
-                        onTap: () => provider.setStep(AppStep.manageVehicles),
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 200),
+                      child: Material(
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
+                        child: InkWell(
+                          onTap: () => provider.setStep(AppStep.manageVehicles),
+                          borderRadius: BorderRadius.circular(20),
                         child: Container(
                           padding: const EdgeInsets.all(18),
                           decoration: BoxDecoration(
@@ -287,13 +296,16 @@ class SettingsScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    ),
                     const SizedBox(height: 16),
 
                     // Delete Account Card
-                    Material(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      child: InkWell(
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 260),
+                      child: Material(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        child: InkWell(
                         onTap: () => _showDeleteAccountConfirmation(context),
                         borderRadius: BorderRadius.circular(20),
                         child: Container(
@@ -353,12 +365,15 @@ class SettingsScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    ),
 
                     const SizedBox(height: 36),
 
                     // App Info Footer
-                    Center(
-                      child: Column(
+                    FadeSlideIn(
+                      delay: const Duration(milliseconds: 320),
+                      child: Center(
+                        child: Column(
                         children: [
                           Text(
                             'Ngebensin App · v.1.2',
@@ -378,6 +393,7 @@ class SettingsScreen extends StatelessWidget {
                           ),
                         ],
                       ),
+                    ),
                     ),
                     const SizedBox(height: 100),
                   ],

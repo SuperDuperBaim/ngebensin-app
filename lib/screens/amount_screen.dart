@@ -94,188 +94,206 @@ class _AmountScreenState extends State<AmountScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                isRupiah ? 'NOMINAL (RUPIAH)' : 'JUMLAH (LITER)',
-                style: TextStyle(
-                  fontSize: 11,
-                  letterSpacing: 1.2,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textDark.withValues(alpha: 0.6),
+              FadeSlideIn(
+                delay: const Duration(milliseconds: 80),
+                child: Text(
+                  isRupiah ? 'NOMINAL (RUPIAH)' : 'JUMLAH (LITER)',
+                  style: TextStyle(
+                    fontSize: 11,
+                    letterSpacing: 1.2,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textDark.withValues(alpha: 0.6),
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
-              TextField(
-                controller: _controller,
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textDark),
-                onChanged: (val) {
-                  if (isRupiah && val.isNotEmpty) {
-                    final formatted = _formatNumberWithDots(val);
-                    if (formatted != val) {
-                      _controller.value = TextEditingValue(
-                        text: formatted,
-                        selection: TextSelection.collapsed(offset: formatted.length),
-                      );
+              FadeSlideIn(
+                delay: const Duration(milliseconds: 140),
+                child: TextField(
+                  controller: _controller,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textDark),
+                  onChanged: (val) {
+                    if (isRupiah && val.isNotEmpty) {
+                      final formatted = _formatNumberWithDots(val);
+                      if (formatted != val) {
+                        _controller.value = TextEditingValue(
+                          text: formatted,
+                          selection: TextSelection.collapsed(offset: formatted.length),
+                        );
+                      }
                     }
-                  }
-                  setState(() {});
-                },
-                decoration: InputDecoration(
-                  hintText: hintFormatted,
-                  suffixText: isRupiah ? '' : ' Liter',
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+                    setState(() {});
+                  },
+                  decoration: InputDecoration(
+                    hintText: hintFormatted,
+                    suffixText: isRupiah ? '' : ' Liter',
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+                  ),
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
-                helperText,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AppColors.textDark.withValues(alpha: 0.6),
-                  fontWeight: FontWeight.w500,
+              FadeSlideIn(
+                delay: const Duration(milliseconds: 200),
+                child: Text(
+                  helperText,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textDark.withValues(alpha: 0.6),
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
-              Text(
-                'OPSI NOMINAL CEPAT',
-                style: TextStyle(
-                  fontSize: 11,
-                  letterSpacing: 1.2,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textDark.withValues(alpha: 0.6),
+              FadeSlideIn(
+                delay: const Duration(milliseconds: 260),
+                child: Text(
+                  'OPSI NOMINAL CEPAT',
+                  style: TextStyle(
+                    fontSize: 11,
+                    letterSpacing: 1.2,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textDark.withValues(alpha: 0.6),
+                  ),
                 ),
               ),
               const SizedBox(height: 10),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: isRupiah
-                    ? quickNominals.map((nom) {
-                        final formatted = _formatNumberWithDots(nom.toString());
-                        final chipLabel = 'Rp $formatted';
-                        final isSelected = _controller.text == formatted;
-                        return ChoiceChip(
-                          label: Text(chipLabel),
-                          selected: isSelected,
-                          selectedColor: AppColors.primaryDark,
-                          backgroundColor: Colors.white,
-                          labelStyle: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: isSelected ? Colors.white : AppColors.textDark,
-                          ),
-                          side: BorderSide(
-                            color: isSelected ? AppColors.primaryDark : AppColors.olive.withValues(alpha: 0.3),
-                          ),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                          onSelected: (_) => _selectQuickValue(formatted),
-                        );
-                      }).toList()
-                    : quickLiters.map((lit) {
-                        final litStr = lit % 1 == 0 ? lit.toInt().toString() : lit.toString();
-                        final chipLabel = '$litStr Liter';
-                        final isSelected = _controller.text == litStr;
-                        return ChoiceChip(
-                          label: Text(chipLabel),
-                          selected: isSelected,
-                          selectedColor: AppColors.primaryDark,
-                          backgroundColor: Colors.white,
-                          labelStyle: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: isSelected ? Colors.white : AppColors.textDark,
-                          ),
-                          side: BorderSide(
-                            color: isSelected ? AppColors.primaryDark : AppColors.olive.withValues(alpha: 0.3),
-                          ),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                          onSelected: (_) => _selectQuickValue(litStr),
-                        );
-                      }).toList(),
+              FadeSlideIn(
+                delay: const Duration(milliseconds: 320),
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: isRupiah
+                      ? quickNominals.map((nom) {
+                          final formatted = _formatNumberWithDots(nom.toString());
+                          final chipLabel = 'Rp $formatted';
+                          final isSelected = _controller.text == formatted;
+                          return ChoiceChip(
+                            label: Text(chipLabel),
+                            selected: isSelected,
+                            selectedColor: AppColors.primaryDark,
+                            backgroundColor: Colors.white,
+                            labelStyle: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: isSelected ? Colors.white : AppColors.textDark,
+                            ),
+                            side: BorderSide(
+                              color: isSelected ? AppColors.primaryDark : AppColors.olive.withValues(alpha: 0.3),
+                            ),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                            onSelected: (_) => _selectQuickValue(formatted),
+                          );
+                        }).toList()
+                      : quickLiters.map((lit) {
+                          final litStr = lit % 1 == 0 ? lit.toInt().toString() : lit.toString();
+                          final chipLabel = '$litStr Liter';
+                          final isSelected = _controller.text == litStr;
+                          return ChoiceChip(
+                            label: Text(chipLabel),
+                            selected: isSelected,
+                            selectedColor: AppColors.primaryDark,
+                            backgroundColor: Colors.white,
+                            labelStyle: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: isSelected ? Colors.white : AppColors.textDark,
+                            ),
+                            side: BorderSide(
+                              color: isSelected ? AppColors.primaryDark : AppColors.olive.withValues(alpha: 0.3),
+                            ),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                            onSelected: (_) => _selectQuickValue(litStr),
+                          );
+                        }).toList(),
+                ),
               ),
               const SizedBox(height: 32),
-              SizedBox(
-                width: double.infinity,
-                height: 54,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    final cleanStr = _controller.text.replaceAll('.', '').replaceAll(',', '.').trim();
-                    final val = double.tryParse(cleanStr);
-                    if (val == null) {
-                      showValidationPopup(
-                        context,
-                        title: 'Nominal Tidak Valid',
-                        message: 'Silakan masukkan angka nominal pengisian yang valid.',
-                      );
-                      return;
-                    }
+              FadeSlideIn(
+                delay: const Duration(milliseconds: 380),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 54,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final cleanStr = _controller.text.replaceAll('.', '').replaceAll(',', '.').trim();
+                      final val = double.tryParse(cleanStr);
+                      if (val == null) {
+                        showValidationPopup(
+                          context,
+                          title: 'Nominal Tidak Valid',
+                          message: 'Silakan masukkan angka nominal pengisian yang valid.',
+                        );
+                        return;
+                      }
 
-                    if (isRupiah) {
-                      if (val < minPrice) {
-                        showValidationPopup(
-                          context,
-                          title: 'Nominal Pengisian Kurang',
-                          message: 'Minimal pengisian adalah ${currencyFormat.format(minPrice)} (1 Liter).',
-                        );
-                        return;
+                      if (isRupiah) {
+                        if (val < minPrice) {
+                          showValidationPopup(
+                            context,
+                            title: 'Nominal Pengisian Kurang',
+                            message: 'Minimal pengisian adalah ${currencyFormat.format(minPrice)} (1 Liter).',
+                          );
+                          return;
+                        }
+                        if (val > maxPrice) {
+                          showValidationPopup(
+                            context,
+                            title: 'Nominal Melebihi Batas',
+                            message: 'Maksimal pengisian adalah ${currencyFormat.format(maxPrice)} (30 Liter).',
+                          );
+                          return;
+                        }
+                        final liters = val / fuel.price;
+                        await context.read<AppProvider>().confirmEntry(liters: liters, total: val, navigateToSuccess: false);
+                        if (context.mounted) {
+                          showSuccessBottomSheet(
+                            context,
+                            fuelName: fuel.name,
+                            liters: liters,
+                            total: val,
+                            onNavigate: () => context.read<AppProvider>().setStep(AppStep.home),
+                          );
+                        }
+                      } else {
+                        if (val < minLiters) {
+                          showValidationPopup(
+                            context,
+                            title: 'Jumlah Liter Kurang',
+                            message: 'Minimal pengisian adalah 1 Liter.',
+                          );
+                          return;
+                        }
+                        if (val > maxLiters) {
+                          showValidationPopup(
+                            context,
+                            title: 'Jumlah Liter Melebihi Batas',
+                            message: 'Maksimal pengisian adalah 30 Liter.',
+                          );
+                          return;
+                        }
+                        final total = val * fuel.price;
+                        await context.read<AppProvider>().confirmEntry(liters: val, total: total, navigateToSuccess: false);
+                        if (context.mounted) {
+                          showSuccessBottomSheet(
+                            context,
+                            fuelName: fuel.name,
+                            liters: val,
+                            total: total,
+                            onNavigate: () => context.read<AppProvider>().setStep(AppStep.home),
+                          );
+                        }
                       }
-                      if (val > maxPrice) {
-                        showValidationPopup(
-                          context,
-                          title: 'Nominal Melebihi Batas',
-                          message: 'Maksimal pengisian adalah ${currencyFormat.format(maxPrice)} (30 Liter).',
-                        );
-                        return;
-                      }
-                      final liters = val / fuel.price;
-                      await context.read<AppProvider>().confirmEntry(liters: liters, total: val, navigateToSuccess: false);
-                      if (context.mounted) {
-                        showSuccessBottomSheet(
-                          context,
-                          fuelName: fuel.name,
-                          liters: liters,
-                          total: val,
-                          onNavigate: () => context.read<AppProvider>().setStep(AppStep.home),
-                        );
-                      }
-                    } else {
-                      if (val < minLiters) {
-                        showValidationPopup(
-                          context,
-                          title: 'Jumlah Liter Kurang',
-                          message: 'Minimal pengisian adalah 1 Liter.',
-                        );
-                        return;
-                      }
-                      if (val > maxLiters) {
-                        showValidationPopup(
-                          context,
-                          title: 'Jumlah Liter Melebihi Batas',
-                          message: 'Maksimal pengisian adalah 30 Liter.',
-                        );
-                        return;
-                      }
-                      final total = val * fuel.price;
-                      await context.read<AppProvider>().confirmEntry(liters: val, total: total, navigateToSuccess: false);
-                      if (context.mounted) {
-                        showSuccessBottomSheet(
-                          context,
-                          fuelName: fuel.name,
-                          liters: val,
-                          total: total,
-                          onNavigate: () => context.read<AppProvider>().setStep(AppStep.home),
-                        );
-                      }
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryDark,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(27)),
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryDark,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(27)),
+                    ),
+                    child: const Text('Simpan Catatan', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   ),
-                  child: const Text('Simpan Catatan', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
               ),
             ],
