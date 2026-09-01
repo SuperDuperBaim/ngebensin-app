@@ -88,18 +88,9 @@ class AppRouter extends StatelessWidget {
       switchInCurve: Curves.easeInOutCubic,
       switchOutCurve: Curves.easeInOutCubic,
       transitionBuilder: (child, animation) {
-        final isIncoming = child.key == ValueKey(provider.currentStep);
-        final slideOffset = isGoingBack
-            ? (isIncoming ? const Offset(-0.08, 0.0) : const Offset(0.08, 0.0))
-            : (isIncoming ? const Offset(0.08, 0.0) : const Offset(-0.08, 0.0));
-
-        return SlideTransition(
-          position: Tween<Offset>(begin: slideOffset, end: Offset.zero)
-              .animate(CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic)),
-          child: FadeTransition(
-            opacity: animation,
-            child: child,
-          ),
+        return FadeTransition(
+          opacity: animation,
+          child: child,
         );
       },
       child: KeyedSubtree(key: ValueKey(provider.currentStep), child: screen),
